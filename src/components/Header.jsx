@@ -69,25 +69,24 @@ const Header = ({ onPortfolioClick, onHomeClick }) => {
           </div>
 
           {/* Hamburger Button (Mobile Only) */}
-          <button 
+          <button
             onClick={toggleMenu}
-            className="md:hidden relative z-[60] w-12 h-12 flex flex-col justify-center items-center gap-1.5 focus:outline-none transition-all duration-300"
+            className={`md:hidden relative z-[60] w-12 h-12 flex flex-col justify-center items-center gap-1.5 focus:outline-none rounded-full transition-all duration-300 ${isMenuOpen ? 'bg-transparent' : 'bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-500/30'}`}
           >
-            <span className={`w-8 h-0.5 transition-all duration-500 bg-gradient-to-r from-blue-500 to-indigo-600 ${isMenuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
-            <span className={`w-8 h-0.5 transition-all duration-300 bg-gradient-to-r from-blue-500 to-indigo-600 ${isMenuOpen ? 'opacity-0' : ''}`}></span>
-            <span className={`w-8 h-0.5 transition-all duration-500 bg-gradient-to-r from-blue-500 to-indigo-600 ${isMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
+            <span className={`w-6 h-0.5 transition-all duration-500 ${isMenuOpen ? 'bg-black rotate-45 translate-y-2' : 'bg-white'}`}></span>
+            <span className={`w-6 h-0.5 transition-all duration-300 ${isMenuOpen ? 'opacity-0' : 'bg-white'}`}></span>
+            <span className={`w-6 h-0.5 transition-all duration-500 ${isMenuOpen ? 'bg-black -rotate-45 -translate-y-2' : 'bg-white'}`}></span>
           </button>
         </div>
       </header>
 
 
-
       {/* Mobile Slide-out Menu */}
       <div
         ref={menuRef}
-        className="fixed inset-0 bg-white z-[55] flex flex-col items-center justify-center translate-x-full md:hidden"
+        className="fixed inset-0 bg-white z-[55] flex flex-col bg-gradient-to-t from-[#0055FF] via-[#a8b0bd] to-[#121212] items-center justify-center translate-x-full md:hidden"
       >
-        <div className="flex flex-col items-center gap-8">
+        <div className="flex flex-col items-center  justify-center gap-8">
           {[
             { label: 'Home', action: onHomeClick },
             { label: 'Portfolio', action: onPortfolioClick },
@@ -98,7 +97,7 @@ const Header = ({ onPortfolioClick, onHomeClick }) => {
               key={link.label}
               ref={el => menuLinksRef.current[i] = el}
               onClick={() => handleLinkClick(link.action)}
-              className="text-4xl font-display font-black text-[#111] hover:text-blue-600 transition-colors cursor-pointer tracking-tighter"
+              className="text-7xl  font-display font-black text-[#121212] hover:text-blue-600 transition-colors cursor-pointer tracking-tighter"
             >
               {link.label}
             </div>
@@ -106,9 +105,9 @@ const Header = ({ onPortfolioClick, onHomeClick }) => {
         </div>
 
         {/* Mobile Menu Footer Info */}
-        <div className="absolute bottom-12 text-center">
+        <div className="absolute bottom-12 flex flex-col items-center justify-center text-center">
           <p className="text-gray-400 text-xs uppercase tracking-widest font-bold">Get in touch</p>
-          <p className="text-[#111] mt-2 font-medium">alimasroor@design.com</p>
+          <p className="text-[#111] mt-2 font-medium">ali.matta4@Gmail.com</p>
         </div>
       </div>
     </>
