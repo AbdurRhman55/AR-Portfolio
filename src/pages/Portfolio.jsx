@@ -53,11 +53,11 @@ const Portfolio = ({ onNavigateToHome }) => {
 
           <div
             ref={videoRef}
-            className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none"
+            className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none mix-blend-screen md:mix-blend-normal transform translate-z-0"
           >
             <video
               autoPlay loop muted playsInline
-              className="w-full h-full object-contain max-h-[80vh] mix-blend-screen md:mix-blend-normal"
+              className="w-full h-full object-contain max-h-[80vh]"
             >
               <source src="/nb-keychain-01-_DeMain-V9.webm" type="video/webm" />
             </video>
