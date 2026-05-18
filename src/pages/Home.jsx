@@ -131,7 +131,7 @@ const Home = ({ onNavigateToPortfolio }) => {
       </div>
 
       {/* Main Hero Content */}
-      <main className="absolute inset-x-10 md:inset-x-16 top-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none z-20">
+      <main className="absolute inset-x-5 md:inset-x-16 top-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none z-20">
         <div className="w-full flex flex-col md:grid md:grid-cols-[1fr_auto_1fr] items-center gap-6 md:gap-0">
           {/* Top (Left text on Desktop) */}
           <div className="flex justify-center md:justify-start text-xl md:text-xl font-medium overflow-hidden mix-blend-difference text-white text-center md:text-left">
@@ -140,7 +140,7 @@ const Home = ({ onNavigateToPortfolio }) => {
 
           {/* Middle (Big Title) */}
           <div className="flex justify-center overflow-hidden py-4 md:py-[10vw] mix-blend-difference text-white w-full md:min-w-[50vw]">
-            <div ref={titleRef} className="flex flex-col font-display text-8xl md:text-[20vw] leading-[0.75] tracking-normal uppercase items-center w-full">
+            <div ref={titleRef} className="flex flex-col font-display text-7xl md:text-[20vw] leading-[0.75] tracking-normal uppercase items-center w-full">
               {slides[currentIndex].title.split(' ').map((word, wordIndex) => (
                 <div key={wordIndex} className="flex justify-center w-full">
                   {word.split('').map((char, charIndex) => (
