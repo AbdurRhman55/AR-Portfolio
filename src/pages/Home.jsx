@@ -140,7 +140,7 @@ const Home = ({ onNavigateToPortfolio }) => {
 
           {/* Middle (Big Title) */}
           <div className="flex justify-center overflow-hidden py-4 md:py-[10vw] mix-blend-difference text-white w-full md:min-w-[50vw]">
-            <div ref={titleRef} className="flex flex-col font-display text-7xl md:text-[20vw] leading-[0.75] tracking-normal uppercase items-center w-full">
+            <div ref={titleRef} className="flex flex-col font-display text-[35vw] md:text-[20vw] leading-[0.75] tracking-normal uppercase items-center w-full">
               {slides[currentIndex].title.split(' ').map((word, wordIndex) => (
                 <div key={wordIndex} className="flex justify-center w-full">
                   {word.split('').map((char, charIndex) => (
