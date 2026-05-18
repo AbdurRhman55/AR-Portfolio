@@ -57,7 +57,7 @@ const Portfolio = ({ onNavigateToHome }) => {
           >
             <video
               autoPlay loop muted playsInline
-              className="w-full h-full object-contain max-h-[80vh]"
+              className="w-full h-full object-contain max-h-[80vh] mix-blend-screen md:mix-blend-normal"
             >
               <source src="/nb-keychain-01-_DeMain-V9.webm" type="video/webm" />
             </video>
