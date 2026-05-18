@@ -53,7 +53,7 @@ const Portfolio = ({ onNavigateToHome }) => {
         <div className="relative flex flex-col items-center justify-center w-full">
           <h1
             ref={titleRef}
-            className="text-[25vw] md:text-[25vw] font-display text-white/90 leading-none tracking-tighter uppercase select-none"
+            className="text-[14vw] md:text-[25vw] font-display text-white/90 leading-none tracking-tighter uppercase select-none"
           >
             PORTFOLIO
           </h1>

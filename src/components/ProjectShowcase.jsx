@@ -80,15 +80,30 @@ const ProjectShowcase = () => {
           ease: 'back.out(1.7)'
         }, '-=0.4');
 
-      ScrollTrigger.create({
-        trigger: section,
-        scroller: scroller,
-        start: 'top 80%',
-        onEnter: () => tl.play(),
-        onRefresh: (self) => {
-          if (self.progress > 0) tl.play();
-        }
-      });
+      if (isDesktop) {
+        ScrollTrigger.create({
+          trigger: section,
+          scroller: scroller,
+          start: 'top 80%',
+          onEnter: () => tl.play(),
+          onRefresh: (self) => {
+            if (self.progress > 0) tl.play();
+          }
+        });
+      } else {
+        // High-reliability IntersectionObserver for mobile screens to bypass custom scrollable wrapper limitations
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              tl.play();
+              observer.disconnect();
+            }
+          });
+        }, {
+          threshold: 0.05
+        });
+        observer.observe(section);
+      }
     });
 
   }, { scope: sectionRef });
