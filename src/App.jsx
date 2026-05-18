@@ -92,7 +92,7 @@ function App() {
   };
 
   return (
-    <div ref={containerRef} className="relative w-full h-screen bg-[#0A0A0A] text-[#FDFDFD] overflow-hidden select-none">
+    <div ref={containerRef} className="relative w-full h-dvh bg-[#0A0A0A] text-[#FDFDFD] overflow-hidden select-none">
 
       {/* Startup Page (Gaming Tech Aesthetic) */}
       <div 

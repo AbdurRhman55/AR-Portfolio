@@ -111,7 +111,7 @@ const Home = ({ onNavigateToPortfolio }) => {
   };
 
   return (
-    <div ref={containerRef} className="relative w-full h-screen bg-[#0A0A0A] overflow-hidden">
+    <div ref={containerRef} className="relative w-full h-full bg-[#0A0A0A] overflow-hidden">
       <Header onPortfolioClick={onNavigateToPortfolio} onHomeClick={() => { }} />
 
       {/* Videos */}

@@ -65,7 +65,7 @@ const Header = ({ onPortfolioClick, onHomeClick }) => {
 
   return (
     <>
-      <header className="absolute top-6 left-6 right-6 md:top-4 md:left-8 md:right-8 z-50 flex items-center justify-between md:grid md:grid-cols-3">
+      <header className="absolute top-6 left-4 right-4 md:top-4 md:left-8 md:right-8 z-50 flex items-center justify-between md:grid md:grid-cols-3">
         {/* Desktop Left Nav / Mobile Hidden */}
         <div className="hidden md:flex flex-col md:flex-row gap-4 md:gap-10 justify-start">
           <div onClick={onHomeClick} className="cursor-pointer">
@@ -81,7 +81,7 @@ const Header = ({ onPortfolioClick, onHomeClick }) => {
           <img
             src="./ChatGPT Image May 14, 2026, 04_25_50 PM.png"
             alt="Logo"
-            className={`h-10 md:h-16 w-auto object-contain transition-all duration-300 ${isMenuOpen ? 'opacity-0 md:opacity-100' : 'mix-blend-difference'}`}
+            className={`h-10 md:h-16 w-auto object-contain ml-[-12px] md:ml-0 transition-all duration-300 ${isMenuOpen ? 'opacity-0 md:opacity-100' : 'mix-blend-difference'}`}
           />
         </div>
 
