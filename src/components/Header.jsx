@@ -14,6 +14,14 @@ const Header = ({ onPortfolioClick, onHomeClick }) => {
 
   useGSAP(() => {
     if (isMenuOpen) {
+      // Prevent scrolling when menu is open
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      const scrollContainers = document.querySelectorAll('[data-scroll-container]');
+      scrollContainers.forEach(el => {
+        el.style.overflowY = 'hidden';
+      });
+
       // Open animation
       gsap.to(menuRef.current, {
         x: 0,
@@ -25,6 +33,14 @@ const Header = ({ onPortfolioClick, onHomeClick }) => {
         { y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: 'power3.out', delay: 0.3 }
       );
     } else {
+      // Restore scrolling
+      document.body.style.overflow = 'auto';
+      document.documentElement.style.overflow = 'auto';
+      const scrollContainers = document.querySelectorAll('[data-scroll-container]');
+      scrollContainers.forEach(el => {
+        el.style.overflowY = 'auto';
+      });
+
       // Close animation
       gsap.to(menuRef.current, {
         x: '100%',
@@ -35,6 +51,14 @@ const Header = ({ onPortfolioClick, onHomeClick }) => {
   }, [isMenuOpen]);
 
   const handleLinkClick = (callback) => {
+    // Restore scrolling immediately before navigation
+    document.body.style.overflow = 'auto';
+    document.documentElement.style.overflow = 'auto';
+    const scrollContainers = document.querySelectorAll('[data-scroll-container]');
+    scrollContainers.forEach(el => {
+      el.style.overflowY = 'auto';
+    });
+
     setIsMenuOpen(false);
     if (callback) setTimeout(callback, 600); // Wait for menu to close before navigating
   };
@@ -57,7 +81,7 @@ const Header = ({ onPortfolioClick, onHomeClick }) => {
           <img
             src="./ChatGPT Image May 14, 2026, 04_25_50 PM.png"
             alt="Logo"
-            className="h-10 md:h-16 w-auto object-contain mix-blend-difference"
+            className={`h-10 md:h-16 w-auto object-contain transition-all duration-300 ${isMenuOpen ? 'opacity-0 md:opacity-100' : 'mix-blend-difference'}`}
           />
         </div>
 
@@ -71,11 +95,11 @@ const Header = ({ onPortfolioClick, onHomeClick }) => {
           {/* Hamburger Button (Mobile Only) */}
           <button
             onClick={toggleMenu}
-            className={`md:hidden relative z-[60] w-12 h-12 flex flex-col justify-center items-center gap-1.5 focus:outline-none rounded-full transition-all duration-300 ${isMenuOpen ? 'bg-transparent' : 'bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-500/30'}`}
+            className={`md:hidden relative z-[60] w-12 h-12 flex flex-col justify-center items-center gap-1.5 focus:outline-none bg-transparent transition-all duration-300 ${isMenuOpen ? 'opacity-0 pointer-events-none' : ''}`}
           >
-            <span className={`w-6 h-0.5 transition-all duration-500 ${isMenuOpen ? 'bg-black rotate-45 translate-y-2' : 'bg-white'}`}></span>
-            <span className={`w-6 h-0.5 transition-all duration-300 ${isMenuOpen ? 'opacity-0' : 'bg-white'}`}></span>
-            <span className={`w-6 h-0.5 transition-all duration-500 ${isMenuOpen ? 'bg-black -rotate-45 -translate-y-2' : 'bg-white'}`}></span>
+            <span className="w-8 h-0.5 transition-all duration-500 bg-white"></span>
+            <span className="w-8 h-0.5 transition-all duration-300 bg-white"></span>
+            <span className="w-8 h-0.5 transition-all duration-500 bg-white"></span>
           </button>
         </div>
       </header>
@@ -84,9 +108,25 @@ const Header = ({ onPortfolioClick, onHomeClick }) => {
       {/* Mobile Slide-out Menu */}
       <div
         ref={menuRef}
-        className="fixed inset-0 bg-white z-[55] flex flex-col bg-gradient-to-t from-[#0055FF] via-[#a8b0bd] to-[#121212] items-center justify-center translate-x-full md:hidden"
+        className="fixed inset-0 z-[55] flex flex-col bg-gradient-to-t from-[#0055FF] via-[#a8b0bd] to-[#121212] translate-x-full md:hidden"
       >
-        <div className="flex flex-col items-center  justify-center gap-8">
+        {/* Mobile Menu Header (Inside Overlay) */}
+        <div className="absolute top-6 left-6 right-6 flex items-center justify-between z-[60]">
+          <img
+            src="./ChatGPT Image May 14, 2026, 04_25_50 PM.png"
+            alt="Logo"
+            className="h-10 w-auto object-contain brightness-0 invert" // Guarantees a pure white logo on dark backgrounds
+          />
+          <button
+            onClick={toggleMenu}
+            className="w-12 h-12 flex flex-col justify-center items-center gap-1.5 focus:outline-none"
+          >
+            <span className="w-6 h-0.5 bg-white rotate-45 translate-y-[4px]"></span>
+            <span className="w-6 h-0.5 bg-white -rotate-45 -translate-y-[4px]"></span>
+          </button>
+        </div>
+
+        <div className="flex-1 flex flex-col items-center justify-center gap-8">
           {[
             { label: 'Home', action: onHomeClick },
             { label: 'Portfolio', action: onPortfolioClick },
@@ -97,7 +137,7 @@ const Header = ({ onPortfolioClick, onHomeClick }) => {
               key={link.label}
               ref={el => menuLinksRef.current[i] = el}
               onClick={() => handleLinkClick(link.action)}
-              className="text-7xl  font-display font-black text-[#121212] hover:text-blue-600 transition-colors cursor-pointer tracking-tighter"
+              className="text-6xl sm:text-7xl font-display font-black text-white hover:text-blue-200 transition-colors cursor-pointer tracking-tighter"
             >
               {link.label}
             </div>
@@ -105,14 +145,15 @@ const Header = ({ onPortfolioClick, onHomeClick }) => {
         </div>
 
         {/* Mobile Menu Footer Info */}
-        <div className="absolute bottom-12 flex flex-col items-center justify-center text-center">
-          <p className="text-gray-400 text-xs uppercase tracking-widest font-bold">Get in touch</p>
-          <p className="text-[#111] mt-2 font-medium">ali.matta4@Gmail.com</p>
+        <div className="absolute bottom-12 left-0 right-0 flex flex-col items-center justify-center text-center">
+          <p className="text-gray-300 text-xs uppercase tracking-widest font-bold">Get in touch</p>
+          <p className="text-white mt-2 font-medium">ali.matta4@Gmail.com</p>
         </div>
       </div>
     </>
   );
 };
+
 
 export default Header;
 

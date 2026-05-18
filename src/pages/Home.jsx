@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import Header from '../components/Header';
 import RollText from '../components/RollText';
+import { InstagramIcon, LinkedinIcon, GithubIcon } from '../components/Icons';
 
 const slides = [
   {
@@ -111,7 +112,7 @@ const Home = ({ onNavigateToPortfolio }) => {
 
   return (
     <div ref={containerRef} className="relative w-full h-screen bg-[#0A0A0A] overflow-hidden">
-      <Header onPortfolioClick={onNavigateToPortfolio} onHomeClick={() => {}} />
+      <Header onPortfolioClick={onNavigateToPortfolio} onHomeClick={() => { }} />
 
       {/* Videos */}
       <div className="absolute inset-0 z-0">
@@ -131,13 +132,15 @@ const Home = ({ onNavigateToPortfolio }) => {
 
       {/* Main Hero Content */}
       <main className="absolute inset-x-10 md:inset-x-16 top-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none z-20">
-        <div className="w-full grid grid-cols-[1fr_auto_1fr] items-center">
-          <div className="flex justify-start text-sm md:text-xl font-medium overflow-hidden mix-blend-difference text-white">
+        <div className="w-full flex flex-col md:grid md:grid-cols-[1fr_auto_1fr] items-center gap-6 md:gap-0">
+          {/* Top (Left text on Desktop) */}
+          <div className="flex justify-center md:justify-start text-xl md:text-xl font-medium overflow-hidden mix-blend-difference text-white text-center md:text-left">
             <div ref={leftTextRef}>{slides[currentIndex].left}</div>
           </div>
 
-          <div className="flex justify-center overflow-hidden py-[10vw] mix-blend-difference text-white min-w-[50vw]">
-            <div ref={titleRef} className="flex flex-col font-display text-[20vw] leading-[0.75] tracking-normal uppercase items-center w-full">
+          {/* Middle (Big Title) */}
+          <div className="flex justify-center overflow-hidden py-4 md:py-[10vw] mix-blend-difference text-white w-full md:min-w-[50vw]">
+            <div ref={titleRef} className="flex flex-col font-display text-8xl md:text-[20vw] leading-[0.75] tracking-normal uppercase items-center w-full">
               {slides[currentIndex].title.split(' ').map((word, wordIndex) => (
                 <div key={wordIndex} className="flex justify-center w-full">
                   {word.split('').map((char, charIndex) => (
@@ -150,14 +153,15 @@ const Home = ({ onNavigateToPortfolio }) => {
             </div>
           </div>
 
-          <div className="flex justify-end text-sm md:text-xl font-medium overflow-hidden mix-blend-difference text-white">
+          {/* Bottom (Right text on Desktop) */}
+          <div className="flex justify-center md:justify-end text-xl md:text-xl font-medium overflow-hidden mix-blend-difference text-white text-center md:text-right">
             <div ref={rightTextRef}>{slides[currentIndex].right}</div>
           </div>
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="absolute bottom-10 left-6 right-6 md:bottom-6 md:left-8 md:right-8 z-10 flex flex-col gap-6 md:gap-4">
+      <footer className="absolute bottom-6 left-4 right-4 md:bottom-6 md:left-8 md:right-8 z-10 flex flex-col gap-4">
         <div className="flex gap-3 w-full mix-blend-difference">
           {slides.map((slide, index) => (
             <div
@@ -171,14 +175,32 @@ const Home = ({ onNavigateToPortfolio }) => {
             </div>
           ))}
         </div>
-        <div className="grid grid-cols-2 items-center w-full relative">
-          <div className="flex justify-start text-left">
+        <div className="flex justify-between items-center w-full relative">
+          <div className="flex justify-start text-left text-[9px] sm:text-xs md:text-lg opacity-80">
             <RollText text={`© ${new Date().getFullYear()} Abdur Rahman All rights reserved.`} />
           </div>
-          <div className="flex gap-3 md:gap-6 justify-end">
-            <RollText text="Instagram" />
-            <RollText text="LinkedIn" />
-            <RollText text="GitHub" />
+          <div className="flex gap-4 md:gap-6 justify-end items-center">
+            {/* Instagram */}
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-blue-500 transition-colors flex items-center justify-center">
+              <span className="hidden md:inline-block"><RollText text="Instagram" /></span>
+              <span className="md:hidden">
+                <InstagramIcon className="w-5 h-5 text-white" />
+              </span>
+            </a>
+            {/* LinkedIn */}
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-blue-500 transition-colors flex items-center justify-center">
+              <span className="hidden md:inline-block"><RollText text="LinkedIn" /></span>
+              <span className="md:hidden">
+                <LinkedinIcon className="w-5 h-5 text-white" />
+              </span>
+            </a>
+            {/* GitHub */}
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-blue-500 transition-colors flex items-center justify-center">
+              <span className="hidden md:inline-block"><RollText text="GitHub" /></span>
+              <span className="md:hidden">
+                <GithubIcon className="w-5 h-5 text-white" />
+              </span>
+            </a>
           </div>
         </div>
       </footer>
