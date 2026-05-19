@@ -42,23 +42,24 @@ const Portfolio = ({ onNavigateToHome }) => {
     const scrollContainer = containerRef.current.parentElement;
     if (!scrollContainer) return;
 
-    // Dynamically override native snap-scrolling to take over smooth compositor controls
-    scrollContainer.classList.remove('snap-y', 'snap-mandatory');
-
     let currentIndex = 0;
     let isAnimating = false;
     let touchStartY = 0;
 
     const scrollToSection = (index) => {
       isAnimating = true;
+      currentIndex = index;
       const targetY = index * window.innerHeight;
 
       gsap.to(scrollContainer, {
         scrollTop: targetY,
-        duration: 1.2,
-        ease: 'power4.inOut',
+        duration: 1.0,
+        ease: 'power3.out',
         onComplete: () => {
-          isAnimating = false;
+          // A tiny cool-down of 150ms absorbs trackpad/touchpad swipe momentum perfectly!
+          setTimeout(() => {
+            isAnimating = false;
+          }, 150);
         }
       });
     };
@@ -67,17 +68,16 @@ const Portfolio = ({ onNavigateToHome }) => {
       e.preventDefault();
       if (isAnimating) return;
 
-      if (Math.abs(e.deltaY) < 15) return;
+      // Filter out micro-scroll events from trackpad inertia
+      if (Math.abs(e.deltaY) < 30) return;
 
       if (e.deltaY > 0) {
         if (currentIndex < 2) {
-          currentIndex++;
-          scrollToSection(currentIndex);
+          scrollToSection(currentIndex + 1);
         }
       } else {
         if (currentIndex > 0) {
-          currentIndex--;
-          scrollToSection(currentIndex);
+          scrollToSection(currentIndex - 1);
         }
       }
     };
@@ -87,10 +87,9 @@ const Portfolio = ({ onNavigateToHome }) => {
     };
 
     const handleTouchMove = (e) => {
-      if (isAnimating) {
-        e.preventDefault();
-        return;
-      }
+      // CRITICAL FIX: ALWAYS block native touch scroll events to let our custom snap engine control the composition layers.
+      // This completely prevents native double-scrolling jumps and page stacking bugs!
+      e.preventDefault();
     };
 
     const handleTouchEnd = (e) => {
@@ -98,17 +97,16 @@ const Portfolio = ({ onNavigateToHome }) => {
       const touchEndY = e.changedTouches[0].clientY;
       const diff = touchStartY - touchEndY;
 
-      if (Math.abs(diff) < 40) return;
+      // Settle swipe sensitivity threshold
+      if (Math.abs(diff) < 50) return;
 
       if (diff > 0) {
         if (currentIndex < 2) {
-          currentIndex++;
-          scrollToSection(currentIndex);
+          scrollToSection(currentIndex + 1);
         }
       } else {
         if (currentIndex > 0) {
-          currentIndex--;
-          scrollToSection(currentIndex);
+          scrollToSection(currentIndex - 1);
         }
       }
     };
