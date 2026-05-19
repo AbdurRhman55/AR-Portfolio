@@ -81,15 +81,18 @@ const ProjectShowcase = () => {
         }, '-=0.4');
 
       if (isDesktop) {
-        ScrollTrigger.create({
-          trigger: section,
-          scroller: scroller,
-          start: 'top 80%',
-          onEnter: () => tl.play(),
-          onRefresh: (self) => {
-            if (self.progress > 0) tl.play();
-          }
+        // High-reliability IntersectionObserver for desktop screens to bypass off-screen translation coordinate bugs
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              tl.play();
+              observer.disconnect();
+            }
+          });
+        }, {
+          threshold: 0.1
         });
+        observer.observe(section);
       } else {
         // High-reliability IntersectionObserver for mobile screens to bypass custom scrollable wrapper limitations
         const observer = new IntersectionObserver((entries) => {
@@ -109,7 +112,7 @@ const ProjectShowcase = () => {
   }, { scope: sectionRef });
 
   return (
-    <section ref={sectionRef} className="relative w-full h-screen bg-[#fafafa] flex flex-col gap-4 items-center justify-center overflow-hidden px-4 md:px-0">
+    <section ref={sectionRef} className="relative w-full h-dvh bg-[#fafafa] flex flex-col gap-4 items-center justify-center overflow-hidden px-4 md:px-0">
       {/* Decorative background elements */}
       <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] bg-[radial-gradient(circle,rgba(0,0,0,0.1)_1px,transparent_1px)] [background-size:40px_40px]"></div>

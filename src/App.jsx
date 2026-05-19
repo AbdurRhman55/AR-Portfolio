@@ -132,7 +132,7 @@ function App() {
         <div 
           ref={portfolioRef} 
           data-scroll-container
-          className="absolute inset-0 z-10 shadow-[-50px_0_100px_rgba(0,0,0,0.5)] overflow-y-auto overflow-x-hidden"
+          className="absolute inset-0 z-10 shadow-[-50px_0_100px_rgba(0,0,0,0.5)] overflow-y-auto overflow-x-hidden snap-y snap-mandatory scroll-smooth"
         >
           <Portfolio onNavigateToHome={goToHome} />
         </div>
