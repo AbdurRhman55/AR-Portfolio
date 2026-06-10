@@ -10,13 +10,15 @@ const ProjectShowcase = () => {
   const containerRef = useRef(null);
   const cardsRef = useRef([]);
   const tagsRef = useRef([]);
+  const titleLineRef = useRef(null);
+  const titleSpanRef = useRef(null);
+  const subtitleRef = useRef(null);
 
   const projects = [
-    { id: 1, title: 'Brand Identity', tag: '@design_guru', color: 'bg-[#FF3D00]', image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop' },
-    { id: 2, title: 'UX Research', tag: '@user_flow', color: 'bg-[#00E5FF]', image: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=800&auto=format&fit=crop' },
-    { id: 3, title: 'Web App', tag: '@dev_master', color: 'bg-[#FFD600]', image: 'https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=800&auto=format&fit=crop' },
-    { id: 4, title: 'Mobile UI', tag: '@pixel_pro', color: 'bg-[#00C853]', image: 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=800&auto=format&fit=crop' },
-    { id: 5, title: '3D Motion', tag: '@creative_mind', color: 'bg-[#6200EA]', image: 'https://images.unsplash.com/photo-1618556450991-2f1af64e8191?q=80&w=800&auto=format&fit=crop' },
+    { id: 1, title: 'Law & Human Rights', tag: '@gov_portal', color: 'bg-[#1a237e]', image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop' },
+    { id: 2, title: 'Ibri Private School', tag: '@edu_platform', color: 'bg-[#00695c]', image: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=800&auto=format&fit=crop' },
+    { id: 3, title: 'Bitcoder Labs', tag: '@tech_studio', color: 'bg-[#0d47a1]', image: 'https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=800&auto=format&fit=crop' },
+    { id: 4, title: 'Research Acadamia', tag: '@academic_hub', color: 'bg-[#4a148c]', image: 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=800&auto=format&fit=crop' },
   ];
 
   useGSAP(() => {
@@ -25,117 +27,79 @@ const ProjectShowcase = () => {
 
     const wrappers = cardsRef.current.filter(el => el !== null);
     const tags = tagsRef.current.filter(el => el !== null);
-
     if (wrappers.length === 0) return;
 
-    const scroller = section.closest('[data-scroll-container]') || window;
+    const scroller = section.closest('[data-scroll-portfolio]') || window;
 
-    let mm = gsap.matchMedia();
+    const isMobile = window.innerWidth < 769;
 
-    mm.add({
-      isDesktop: "(min-width: 769px)",
-      isMobile: "(max-width: 768px)"
-    }, (context) => {
-      let { isDesktop } = context.conditions;
+    gsap.set(titleLineRef.current, { x: isMobile ? -60 : -120, opacity: 0 });
+    gsap.set(titleSpanRef.current, { x: isMobile ? 60 : 120, opacity: 0 });
+    gsap.set(subtitleRef.current, { y: 30, opacity: 0 });
+    gsap.set(wrappers, { y: isMobile ? 400 : 600, x: 0, rotate: 0, opacity: 0, scale: isMobile ? 0.7 : 0.85, filter: 'blur(10px)' });
+    gsap.set(tags, { opacity: 0, scale: 0, y: 10 });
 
-      const tl = gsap.timeline({
-        paused: true,
-        defaults: { ease: 'expo.out', duration: 1.2 }
-      });
-
-      // Initial state
-      gsap.set(wrappers, {
-        y: isDesktop ? 600 : 400,
-        x: 0,
-        rotate: 0,
-        opacity: 0,
-        scale: isDesktop ? 0.85 : 0.7,
-        filter: 'blur(10px)'
-      });
-      gsap.set(tags, { opacity: 0, scale: 0, y: 10 });
-
-      // 1. Entrance
-      tl.to(wrappers, {
-        y: isDesktop ? -50 : -20,
-        opacity: 1,
-        filter: 'blur(0px)',
-        scale: 1,
-        duration: 1.2,
-        ease: 'power3.out'
-      })
-        .to(wrappers, {
-          rotate: (i) => (i - 2) * (isDesktop ? 18 : 12),
-          x: (i) => (i - 2) * (isDesktop ? 155 : 60),
-          y: (i) => Math.abs(i - 2) * (isDesktop ? 50 : 25) - (isDesktop ? 100 : 40),
-          scale: isDesktop ? 0.95 : 0.75,
-          duration: 1.5,
-          ease: 'expo.inOut'
-        }, '-=0.6')
-        .to(tags, {
-          opacity: 1,
-          scale: 1,
-          y: 0,
-          stagger: 0.1,
-          duration: 0.8,
-          ease: 'back.out(1.7)'
-        }, '-=0.4');
-
-      if (isDesktop) {
-        // High-reliability IntersectionObserver for desktop screens to bypass off-screen translation coordinate bugs
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              tl.play();
-              observer.disconnect();
-            }
-          });
-        }, {
-          threshold: 0.1
-        });
-        observer.observe(section);
-      } else {
-        // High-reliability IntersectionObserver for mobile screens to bypass custom scrollable wrapper limitations
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              tl.play();
-              observer.disconnect();
-            }
-          });
-        }, {
-          threshold: 0.05
-        });
-        observer.observe(section);
-      }
+    const tl = gsap.timeline({
+      paused: true,
+      defaults: { ease: 'expo.out', duration: 1.2 }
     });
 
+    tl.to(titleLineRef.current, { x: 0, opacity: 1, duration: 1.4, ease: 'power3.out' }, 0)
+      .to(titleSpanRef.current, { x: 0, opacity: 1, duration: 1.4, ease: 'power3.out' }, 0.1)
+      .to(subtitleRef.current, { y: 0, opacity: 1, duration: 1, ease: 'power3.out' }, 0.3)
+      .to(wrappers, { y: isMobile ? -20 : -50, opacity: 1, filter: 'blur(0px)', scale: 1, duration: 1.2, ease: 'power3.out' }, 0.5)
+      .to(wrappers, {
+        rotate: (i) => (i - 1.5) * (isMobile ? 12 : 18),
+        x: (i) => (i - 1.5) * (isMobile ? 60 : 155),
+        y: (i) => Math.abs(i - 1.5) * (isMobile ? 25 : 50) - (isMobile ? 40 : 100),
+        scale: isMobile ? 0.75 : 0.95,
+        duration: 1.5,
+        ease: 'expo.inOut'
+      }, '-=0.6')
+      .to(tags, {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        stagger: 0.1,
+        duration: 0.8,
+        ease: 'back.out(1.7)'
+      }, '-=0.4');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tl.play();
+          observer.disconnect();
+        }
+      });
+    }, { threshold: 0.1 });
+
+    observer.observe(section);
   }, { scope: sectionRef });
 
   return (
     <section ref={sectionRef} className="relative w-full h-dvh bg-[#fafafa] flex flex-col gap-4 items-center justify-center overflow-hidden px-4 md:px-0">
-      {/* Decorative background elements */}
       <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] bg-[radial-gradient(circle,rgba(0,0,0,0.1)_1px,transparent_1px)] [background-size:40px_40px]"></div>
       </div>
 
-      <div className="text-center mb-24 md:mb-32 mt-10 relative z-10 w-full">
-        <h2 className="text-4xl md:text-8xl font-display font-black text-[#111] tracking-tight leading-[0.9]">
-          A place to display your
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">masterpiece.</span>
+      <div className="text-center mb-20 md:mb-28 mt-10 relative z-10 w-full px-4">
+        <h2 className="text-4xl sm:text-5xl md:text-6xl font-display font-black text-[#111] tracking-tight leading-[1.1]">
+          <span ref={titleLineRef} className="inline-block">A place to display your</span>{' '}
+          <span ref={titleSpanRef} className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">masterpiece.</span>
         </h2>
-        <p className="mt-6 md:mt-8 text-gray-400 font-medium tracking-[0.2em] uppercase text-[10px] md:text-sm">
+        <p ref={subtitleRef} className="mt-5 md:mt-6 text-gray-400 font-medium tracking-[0.25em] uppercase text-[11px] md:text-xs">
           Crafting digital excellence through design
         </p>
       </div>
 
-      <div ref={containerRef} className="relative w-full max-w-6xl h-[350px] md:h-[500px]  flex items-center justify-center">
+      <div ref={containerRef} className="relative w-full max-w-6xl h-[350px] md:h-[500px] flex items-center justify-center">
         {projects.map((project, index) => (
           <div
             key={project.id}
             ref={(el) => (cardsRef.current[index] = el)}
             className="absolute flex flex-col items-center"
           >
-            {/* Tag/Badge */}
             <div
               ref={(el) => (tagsRef.current[index] = el)}
               className={`mb-2 md:mb-4 px-3 md:px-4 py-1 md:py-1.5 rounded-full text-white text-[8px] md:text-[10px] font-bold shadow-lg ${project.color} z-20 whitespace-nowrap uppercase tracking-wider`}
@@ -143,7 +107,6 @@ const ProjectShowcase = () => {
               {project.tag}
             </div>
 
-            {/* Project Card */}
             <div
               className={`relative w-36 h-48 md:w-48 md:h-64 rounded-2xl md:rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] overflow-hidden border-[4px] md:border-[5px] border-white cursor-pointer group`}
               style={{ zIndex: index }}

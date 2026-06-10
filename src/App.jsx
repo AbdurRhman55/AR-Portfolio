@@ -1,8 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import Home from './pages/Home';
 import Portfolio from './pages/Portfolio';
+import About from './pages/About';
+
+gsap.registerPlugin(ScrollTrigger);
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -12,15 +16,15 @@ function App() {
   const progressLineRef = useRef(null);
   const percentRef = useRef(null);
   const shuffleTextRef = useRef(null);
-  
+
   const portfolioRef = useRef(null);
   const homeRef = useRef(null);
+  const aboutRef = useRef(null);
 
   useGSAP(() => {
-    // Startup Animation Sequence
     const startupWords = ["DEVELOPMENT", "CREATIVITY", "STRATEGY", "PRECISION", "MOTION", "PORTFOLIO", "ABDUR RAHMAN"];
     let wordIndex = 0;
-    
+
     const shuffleInterval = setInterval(() => {
       if (shuffleTextRef.current) {
         shuffleTextRef.current.innerText = startupWords[wordIndex % startupWords.length];
@@ -49,95 +53,95 @@ function App() {
       ease: 'expo.inOut'
     }, '+=0.2');
 
-    // Initialize portfolio position off-screen
-    gsap.set(portfolioRef.current, { xPercent: 100 });
+    gsap.set([portfolioRef.current, aboutRef.current], { xPercent: 100 });
   }, { scope: containerRef });
 
-  const goToPortfolio = () => {
-    if (currentPage === 'portfolio') return;
+  const navigateTo = (from, to) => {
+    if (from === to) return;
+
+    const fromRef = from === 'home' ? homeRef : from === 'portfolio' ? portfolioRef : aboutRef;
+    const toRef = to === 'home' ? homeRef : to === 'portfolio' ? portfolioRef : aboutRef;
+    const direction = (from === 'home' && to === 'portfolio') || (from === 'portfolio' && to === 'about') || (from === 'home' && to === 'about') ? -1 : 1;
+
     const tl = gsap.timeline({
-      onComplete: () => setCurrentPage('portfolio')
+      onComplete: () => {
+        setCurrentPage(to);
+        ScrollTrigger.refresh();
+      }
     });
 
-    tl.to(homeRef.current, {
-      xPercent: -100,
-      duration: 1.2,
-      ease: 'expo.inOut'
-    }, 0);
-
-    tl.to(portfolioRef.current, {
-      xPercent: 0,
-      duration: 1.2,
-      ease: 'expo.inOut'
-    }, 0);
+    tl.to(fromRef.current, { xPercent: 100 * direction, duration: 1.2, ease: 'expo.inOut' }, 0);
+    tl.set(toRef.current, { xPercent: -100 * direction }, 0);
+    tl.to(toRef.current, { xPercent: 0, duration: 1.2, ease: 'expo.inOut' }, 0);
   };
 
-  const goToHome = () => {
-    if (currentPage === 'home') return;
-    const tl = gsap.timeline({
-      onComplete: () => setCurrentPage('home')
-    });
-
-    tl.to(homeRef.current, {
-      xPercent: 0,
-      duration: 1.2,
-      ease: 'expo.inOut'
-    }, 0);
-
-    tl.to(portfolioRef.current, {
-      xPercent: 100,
-      duration: 1.2,
-      ease: 'expo.inOut'
-    }, 0);
-  };
+  const goToPortfolio = () => navigateTo(currentPage, 'portfolio');
+  const goToHome = () => navigateTo(currentPage, 'home');
+  const goToAbout = () => navigateTo(currentPage, 'about');
 
   return (
     <div ref={containerRef} className="relative w-full h-dvh bg-[#0A0A0A] text-[#FDFDFD] overflow-hidden select-none">
-
-      {/* Startup Page (Gaming Tech Aesthetic) */}
-      <div 
+      <div
         ref={startupRef}
-        className="fixed inset-0 bg-[#0A0A0A] z-[100] flex flex-col items-center justify-center pointer-events-auto overflow-hidden"
+        className="fixed inset-0 bg-[#080808] z-[100] flex items-center justify-center pointer-events-auto overflow-hidden"
       >
-        <div className="absolute inset-0 opacity-20 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%]" />
-        
-        <div className="flex flex-col items-center relative z-10">
-          <div className="mb-4 text-cyan-500 font-logo text-sm tracking-[0.5em] animate-pulse">INITIALIZING SYSTEM...</div>
-          <h2 
-            ref={shuffleTextRef}
-            className="text-white font-logo text-6xl md:text-9xl tracking-tighter uppercase drop-shadow-[0_0_30px_rgba(255,255,255,0.3)]"
-          >
-            STARTING...
-          </h2>
-        </div>
+        {/* Background elements */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(168,85,247,0.12)_0%,_transparent_60%)] pointer-events-none" />
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)', backgroundSize: '50px 50px' }} />
 
-        <div className="absolute bottom-0 left-0 w-full h-[15px] bg-white/5 backdrop-blur-md border-t border-white/10">
-          <div ref={progressLineRef} className="h-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 w-0 relative shadow-[0_0_30px_rgba(0,230,255,0.6)]">
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent translate-x-[-100%] animate-[shimmer_1.5s_infinite]" />
-            <div className="absolute right-0 top-0 h-full w-[10px] bg-white blur-sm shadow-[0_0_20px_white]" />
+        <div className="relative z-10 flex flex-col items-center w-full px-6">
+          {/* Top Label */}
+          <div className="flex items-center gap-3 mb-8 md:mb-12">
+            <div className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse" />
+            <span className="text-[10px] md:text-xs text-purple-400 tracking-[0.4em] uppercase font-semibold">
+              Initializing Experience
+            </span>
           </div>
-          <div className="absolute bottom-8 right-10 font-logo text-6xl md:text-8xl text-white mix-blend-difference flex items-baseline gap-2 group">
-            <span ref={percentRef} className="drop-shadow-[0_0_15px_rgba(0,255,255,0.5)]">0</span>
-            <span className="text-2xl md:text-3xl text-cyan-400 font-bold opacity-80">%</span>
+
+          {/* Shuffling Text */}
+          <div className="h-[14vw] md:h-[8vw] flex items-center justify-center mb-8 overflow-hidden">
+            <h2 ref={shuffleTextRef} className="font-display font-black text-[14vw] md:text-[8vw] leading-[0.8] tracking-tighter uppercase text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.05)] text-center whitespace-nowrap">
+              ABDUR RAHMAN
+            </h2>
+          </div>
+
+          {/* Subtitle */}
+          <p className="text-sm md:text-base text-white/50 font-light tracking-wide max-w-[400px] text-center mb-16">
+            Crafting performant, elegant digital experiences.
+          </p>
+
+          {/* Progress Bar Container */}
+          <div className="w-[80vw] max-w-[400px] flex flex-col gap-4">
+            <div className="w-full h-px bg-white/[0.08] relative overflow-hidden rounded-full">
+              <div 
+                ref={progressLineRef} 
+                className="absolute top-0 left-0 h-full bg-gradient-to-r from-purple-600 via-pink-500 to-purple-400 w-0" 
+              />
+            </div>
+            
+            <div className="flex items-center justify-between text-[10px] md:text-[11px] font-semibold tracking-widest uppercase">
+              <span className="text-white/40">Loading Assets</span>
+              <span className="text-white flex gap-0.5 items-baseline">
+                <span ref={percentRef}>0</span>
+                <span className="text-purple-400">%</span>
+              </span>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Main Pages Flow */}
       <div className="absolute inset-0 z-0">
         <div ref={homeRef} className="absolute inset-0">
-          <Home onNavigateToPortfolio={goToPortfolio} />
-        </div>
-        
-        <div 
-          ref={portfolioRef} 
-          data-scroll-container
-          className="absolute inset-0 z-10 shadow-[-50px_0_100px_rgba(0,0,0,0.5)] overflow-hidden"
-        >
-          <Portfolio onNavigateToHome={goToHome} />
+          <Home onNavigateToPortfolio={goToPortfolio} onNavigateToAbout={goToAbout} />
         </div>
 
+        <div ref={portfolioRef} className="absolute inset-0 z-10 shadow-[-50px_0_100px_rgba(0,0,0,0.5)] overflow-hidden">
+          <Portfolio onNavigateToHome={goToHome} onNavigateToAbout={goToAbout} />
+        </div>
 
+        <div ref={aboutRef} className="absolute inset-0 z-20 shadow-[-50px_0_100px_rgba(0,0,0,0.5)] overflow-hidden">
+          <About onNavigateToHome={goToHome} onNavigateToPortfolio={goToPortfolio} />
+        </div>
       </div>
     </div>
   );
