@@ -5,6 +5,7 @@ import { useGSAP } from '@gsap/react';
 import Home from './pages/Home';
 import Portfolio from './pages/Portfolio';
 import About from './pages/About';
+import Contact from './pages/Contact';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,6 +21,7 @@ function App() {
   const portfolioRef = useRef(null);
   const homeRef = useRef(null);
   const aboutRef = useRef(null);
+  const contactRef = useRef(null);
 
   useGSAP(() => {
     const startupWords = ["DEVELOPMENT", "CREATIVITY", "STRATEGY", "PRECISION", "MOTION", "PORTFOLIO", "ABDUR RAHMAN"];
@@ -53,15 +55,18 @@ function App() {
       ease: 'expo.inOut'
     }, '+=0.2');
 
-    gsap.set([portfolioRef.current, aboutRef.current], { xPercent: 100 });
+    gsap.set([portfolioRef.current, aboutRef.current, contactRef.current], { xPercent: 100 });
   }, { scope: containerRef });
 
   const navigateTo = (from, to) => {
     if (from === to) return;
 
-    const fromRef = from === 'home' ? homeRef : from === 'portfolio' ? portfolioRef : aboutRef;
-    const toRef = to === 'home' ? homeRef : to === 'portfolio' ? portfolioRef : aboutRef;
-    const direction = (from === 'home' && to === 'portfolio') || (from === 'portfolio' && to === 'about') || (from === 'home' && to === 'about') ? -1 : 1;
+    const refs = { home: homeRef, portfolio: portfolioRef, about: aboutRef, contact: contactRef };
+    const indices = { home: 0, portfolio: 1, about: 2, contact: 3 };
+
+    const fromRef = refs[from];
+    const toRef = refs[to];
+    const direction = indices[from] < indices[to] ? -1 : 1;
 
     const tl = gsap.timeline({
       onComplete: () => {
@@ -78,6 +83,7 @@ function App() {
   const goToPortfolio = () => navigateTo(currentPage, 'portfolio');
   const goToHome = () => navigateTo(currentPage, 'home');
   const goToAbout = () => navigateTo(currentPage, 'about');
+  const goToContact = () => navigateTo(currentPage, 'contact');
 
   return (
     <div ref={containerRef} className="relative w-full h-dvh bg-[#0A0A0A] text-[#FDFDFD] overflow-hidden select-none">
@@ -132,15 +138,19 @@ function App() {
 
       <div className="absolute inset-0 z-0">
         <div ref={homeRef} className="absolute inset-0">
-          <Home onNavigateToPortfolio={goToPortfolio} onNavigateToAbout={goToAbout} />
+          <Home onNavigateToPortfolio={goToPortfolio} onNavigateToAbout={goToAbout} onNavigateToContact={goToContact} />
         </div>
 
         <div ref={portfolioRef} className="absolute inset-0 z-10 shadow-[-50px_0_100px_rgba(0,0,0,0.5)] overflow-hidden">
-          <Portfolio onNavigateToHome={goToHome} onNavigateToAbout={goToAbout} />
+          <Portfolio onNavigateToHome={goToHome} onNavigateToAbout={goToAbout} onNavigateToContact={goToContact} />
         </div>
 
         <div ref={aboutRef} className="absolute inset-0 z-20 shadow-[-50px_0_100px_rgba(0,0,0,0.5)] overflow-hidden">
-          <About onNavigateToHome={goToHome} onNavigateToPortfolio={goToPortfolio} />
+          <About onNavigateToHome={goToHome} onNavigateToPortfolio={goToPortfolio} onNavigateToContact={goToContact} />
+        </div>
+
+        <div ref={contactRef} className="absolute inset-0 z-30 shadow-[-50px_0_100px_rgba(0,0,0,0.5)] overflow-hidden">
+          <Contact onNavigateToHome={goToHome} onNavigateToPortfolio={goToPortfolio} onNavigateToAbout={goToAbout} />
         </div>
       </div>
     </div>

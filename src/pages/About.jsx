@@ -8,7 +8,7 @@ import AboutSections from "../components/AboutSections";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const About = ({ onNavigateToHome, onNavigateToPortfolio }) => {
+const About = ({ onNavigateToHome, onNavigateToPortfolio, onNavigateToContact }) => {
   const containerRef = useRef(null);
   const avatarRef = useRef(null);
   const leftTextRef = useRef(null);
@@ -121,6 +121,7 @@ const About = ({ onNavigateToHome, onNavigateToPortfolio }) => {
         onHomeClick={onNavigateToHome}
         onPortfolioClick={onNavigateToPortfolio}
         onAboutClick={() => {}}
+        onContactClick={onNavigateToContact}
       />
 
       <section

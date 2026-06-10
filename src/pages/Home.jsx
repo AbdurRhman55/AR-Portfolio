@@ -38,7 +38,7 @@ const slides = [
   },
 ];
 
-const Home = ({ onNavigateToPortfolio, onNavigateToAbout }) => {
+const Home = ({ onNavigateToPortfolio, onNavigateToAbout, onNavigateToContact }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const containerRef = useRef(null);
@@ -129,6 +129,7 @@ const Home = ({ onNavigateToPortfolio, onNavigateToAbout }) => {
         onPortfolioClick={onNavigateToPortfolio}
         onHomeClick={() => {}}
         onAboutClick={onNavigateToAbout}
+        onContactClick={onNavigateToContact}
       />
 
       <div className="absolute inset-0 z-0">
