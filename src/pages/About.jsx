@@ -5,10 +5,15 @@ import { useGSAP } from "@gsap/react";
 import Header from "../components/Header";
 import { InstagramIcon, LinkedinIcon, GithubIcon } from "../components/Icons";
 import AboutSections from "../components/AboutSections";
+import Footer from "../components/Footer";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const About = ({ onNavigateToHome, onNavigateToPortfolio, onNavigateToContact }) => {
+const About = ({
+  onNavigateToHome,
+  onNavigateToPortfolio,
+  onNavigateToContact,
+}) => {
   const containerRef = useRef(null);
   const avatarRef = useRef(null);
   const leftTextRef = useRef(null);
@@ -115,7 +120,12 @@ const About = ({ onNavigateToHome, onNavigateToPortfolio, onNavigateToContact })
       data-scroll-about
       className="relative w-full h-full bg-[#121212] overflow-x-hidden overflow-y-auto select-none text-white"
     >
-      <div className="absolute inset-0 opacity-[0.015] pointer-events-none mix-blend-overlay" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} />
+      <div
+        className="absolute inset-0 opacity-[0.015] pointer-events-none mix-blend-overlay"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+        }}
+      />
 
       <Header
         onHomeClick={onNavigateToHome}
@@ -174,65 +184,54 @@ const About = ({ onNavigateToHome, onNavigateToPortfolio, onNavigateToContact })
             </h2>
           </div>
         </div>
-
-        <div className="flex md:hidden justify-center gap-8 py-5 border-t border-white/[0.04] bg-[#0A0A0A] relative z-20">
-          <a
-            href="https://github.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-white/50 hover:text-[#0055FF] transition-colors"
-          >
-            <GithubIcon className="w-5 h-5" />
-          </a>
-          <a
-            href="https://linkedin.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-white/50 hover:text-[#0055FF] transition-colors"
-          >
-            <LinkedinIcon className="w-5 h-5" />
-          </a>
-          <a
-            href="https://instagram.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-white/50 hover:text-[#0055FF] transition-colors"
-          >
-            <InstagramIcon className="w-5 h-5" />
-          </a>
-        </div>
       </section>
 
       <AboutSections />
 
+      <Footer
+        onNavigateToPortfolio={onNavigateToPortfolio}
+        onNavigateToContact={onNavigateToContact}
+        onNavigateToAbout={() => {}}
+      />
+
       <div
         ref={socialRef}
-        className="hidden md:flex fixed left-8 top-1/2 -translate-y-1/2 flex-col gap-6 z-50 mix-blend-difference"
+        className="flex fixed left-4 md:left-8 top-1/2 -translate-y-1/2 flex-col gap-5 md:gap-6 z-50"
       >
         <a
           href="https://github.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-white/40 hover:text-[#0055FF] transition-colors duration-300 transform hover:scale-110"
+          className="text-[#6b7280] hover:text-[#0055FF] transition-colors duration-300 transform hover:scale-110"
         >
           <GithubIcon className="w-5 h-5" />
         </a>
         <a
-          href="https://linkedin.com"
+          href="https://www.linkedin.com/in/abdur-rahman-web/"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-white/40 hover:text-[#0055FF] transition-colors duration-300 transform hover:scale-110"
+          className="text-[#6b7280] hover:text-[#0055FF] transition-colors duration-300 transform hover:scale-110"
         >
           <LinkedinIcon className="w-5 h-5" />
         </a>
         <a
-          href="https://instagram.com"
+          href="https://www.instagram.com/abdur_rahman_5577/"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-white/40 hover:text-[#0055FF] transition-colors duration-300 transform hover:scale-110"
+          className="text-[#6b7280] hover:text-[#0055FF] transition-colors duration-300 transform hover:scale-110"
         >
           <InstagramIcon className="w-5 h-5" />
         </a>
+        <button
+          onClick={() => window.open("https://mail.google.com/mail/?view=cm&fs=1&to=ali.matta4@gmail.com", "_blank")}
+          className="text-[#6b7280] hover:text-[#0055FF] transition-colors duration-300 transform hover:scale-110 bg-transparent border-none p-0 cursor-pointer"
+          aria-label="Send email"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2" />
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+          </svg>
+        </button>
       </div>
 
       <div

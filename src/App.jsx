@@ -141,15 +141,15 @@ function App() {
           <Home onNavigateToPortfolio={goToPortfolio} onNavigateToAbout={goToAbout} onNavigateToContact={goToContact} />
         </div>
 
-        <div ref={portfolioRef} className="absolute inset-0 z-10 shadow-[-50px_0_100px_rgba(0,0,0,0.5)] overflow-hidden">
+        <div ref={portfolioRef} className="absolute inset-0 z-10 overflow-hidden">
           <Portfolio onNavigateToHome={goToHome} onNavigateToAbout={goToAbout} onNavigateToContact={goToContact} />
         </div>
 
-        <div ref={aboutRef} className="absolute inset-0 z-20 shadow-[-50px_0_100px_rgba(0,0,0,0.5)] overflow-hidden">
+        <div ref={aboutRef} className="absolute inset-0 z-20 overflow-hidden">
           <About onNavigateToHome={goToHome} onNavigateToPortfolio={goToPortfolio} onNavigateToContact={goToContact} />
         </div>
 
-        <div ref={contactRef} className="absolute inset-0 z-30 shadow-[-50px_0_100px_rgba(0,0,0,0.5)] overflow-hidden">
+        <div ref={contactRef} className="absolute inset-0 z-30 overflow-hidden">
           <Contact onNavigateToHome={goToHome} onNavigateToPortfolio={goToPortfolio} onNavigateToAbout={goToAbout} />
         </div>
       </div>

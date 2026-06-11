@@ -1,12 +1,25 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import RollText from './RollText';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
 const Header = ({ onPortfolioClick, onHomeClick, onAboutClick, onContactClick }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const menuRef = useRef(null);
   const menuLinksRef = useRef([]);
+
+  useEffect(() => {
+    const checkScroll = () => {
+      const scroller = document.querySelector("[data-scroll-about],[data-scroll-portfolio]") || window;
+      const top = scroller === window ? window.scrollY : scroller.scrollTop;
+      setScrolled(top > 24);
+    };
+    checkScroll();
+    const scroller = document.querySelector("[data-scroll-about],[data-scroll-portfolio]") || window;
+    scroller.addEventListener("scroll", checkScroll, { passive: true });
+    return () => scroller.removeEventListener("scroll", checkScroll);
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -48,7 +61,7 @@ const Header = ({ onPortfolioClick, onHomeClick, onAboutClick, onContactClick })
 
   return (
     <>
-      <header className="absolute top-6 left-4 right-4 md:top-4 md:left-8 md:right-8 z-50 flex items-center justify-between md:grid md:grid-cols-3">
+      <header className={`fixed md:absolute top-6 left-4 right-4 md:top-4 md:left-8 md:right-8 z-50 flex items-center justify-between md:grid md:grid-cols-3 transition-all duration-300 rounded-lg md:rounded-none px-3 md:px-0 py-2 md:py-0 ${scrolled ? 'bg-gradient-to-r from-[#0055FF]/25 via-[#a8b0bd]/15 to-[#121212]/90 md:bg-transparent backdrop-blur-md md:backdrop-blur-none' : ''}`}>
         <div className="hidden md:flex flex-col md:flex-row gap-4 md:gap-10 justify-start">
           <div onClick={onHomeClick} className="cursor-pointer">
             <RollText text="Featured Work [4]" />

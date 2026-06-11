@@ -4,6 +4,7 @@ import { useGSAP } from '@gsap/react';
 import Header from '../components/Header';
 import ProjectShowcase from '../components/ProjectShowcase';
 import Skills from '../components/Skills';
+import Footer from '../components/Footer';
 
 const Portfolio = ({ onNavigateToHome, onNavigateToAbout, onNavigateToContact }) => {
   const containerRef = useRef(null);
@@ -76,6 +77,10 @@ const Portfolio = ({ onNavigateToHome, onNavigateToAbout, onNavigateToContact })
 
       <ProjectShowcase />
       <Skills />
+      <Footer
+        onNavigateToAbout={onNavigateToAbout}
+        onNavigateToContact={onNavigateToContact}
+      />
     </div>
   );
 };

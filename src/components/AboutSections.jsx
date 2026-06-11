@@ -7,7 +7,8 @@ function useReveal() {
   useEffect(() => {
     const scroller = document.querySelector("[data-scroll-about]") || window;
     const run = () => {
-      const ch = scroller === window ? window.innerHeight : scroller.clientHeight;
+      const ch =
+        scroller === window ? window.innerHeight : scroller.clientHeight;
       document.querySelectorAll("[data-r]").forEach((el) => {
         const rect = el.getBoundingClientRect();
         if (rect.top < ch * 0.88) {
@@ -49,7 +50,15 @@ function StatCell({ num, lbl, delay }) {
   const [active, setActive] = useState(false);
   useEffect(() => {
     const el = ref.current;
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setActive(true); obs.disconnect(); } }, { threshold: 0.5 });
+    const obs = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setActive(true);
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.5 },
+    );
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
@@ -108,11 +117,11 @@ const G = `
   position:relative;
   z-index:1;
   width:100%;
-  padding:120px 48px;
+  padding:60px 48px;
   display:flex;
   justify-content:center;
 }
-@media(max-width:680px){.s{padding:80px 20px}}
+@media(max-width:680px){.s{padding:40px 20px}}
 .si{
   width:100%;
   max-width:1100px;
@@ -177,7 +186,7 @@ const G = `
   .stc:nth-child(3){border-right:1px solid var(--line2)!important}
 }
 .stc{
-  padding:52px 20px;
+  padding:32px 20px;
   text-align:center;
   border-right:1px solid var(--line2);
   transition:background .3s;
@@ -205,10 +214,10 @@ const G = `
 .about-bg{ background:var(--light) }
 .about-grid{
   display:grid;
-  grid-template-columns:5fr 7fr;
-  gap:80px;
+  grid-template-columns:1fr 1fr;
+  gap:40px;
   align-items:start;
-  margin-top:60px;
+  margin-top:36px;
 }
 @media(max-width:900px){
   .about-grid{grid-template-columns:1fr;gap:48px}
@@ -216,45 +225,45 @@ const G = `
 
 .av-box{
   position:relative;
-  aspect-ratio:3/4;
-  max-width:320px;
   border-radius:4px;
   overflow:hidden;
   border:1px solid var(--line);
-  background:linear-gradient(160deg,rgba(0,85,255,.06),rgba(0,85,255,.015));
+  background:var(--card);
+  display:inline-block;
+  width:100%;
+  max-width:380px;
 }
 .av-box-inner{
+  position:relative;
+  aspect-ratio:3/4;
+}
+.av-img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
   position:absolute;
   inset:0;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-}
-.av-monogram{
-  font-family:'Playfair Display',serif;
-  font-size:72px;
-  font-weight:700;
-  font-style:italic;
-  color:rgba(0,85,255,.12);
-  line-height:1;
-  user-select:none;
 }
 .av-avail{
+  position:absolute;
+  bottom:14px;
+  left:50%;
+  transform:translateX(-50%);
+  white-space:nowrap;
   display:inline-flex;
   align-items:center;
   gap:6px;
   padding:5px 12px;
   border-radius:100px;
-  border:1px solid rgba(0,85,255,.2);
-  background:rgba(0,85,255,.04);
+  border:1px solid rgba(255,255,255,.25);
+  background:rgba(0,0,0,.55);
+  backdrop-filter:blur(6px);
   font-size:10px;
   font-weight:600;
   letter-spacing:.2em;
   text-transform:uppercase;
-  color:var(--blue);
-  margin-top:12px;
+  color:#fff;
 }
 .av-dot{
   width:5px;height:5px;
@@ -284,7 +293,7 @@ const G = `
 .about-body p+p{margin-top:18px}
 .about-body b{font-weight:500;color:var(--ink)}
 
-.skills{margin-top:40px}
+.skills{margin-top:28px}
 .sk-row{margin-bottom:18px}
 .sk-head{
   display:flex;
@@ -318,7 +327,7 @@ const G = `
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:20px;
-  margin-top:60px;
+  margin-top:36px;
   width:100%;
 }
 @media(max-width:900px){
@@ -423,7 +432,7 @@ const G = `
   border-top:1px solid var(--line2);
   border-bottom:1px solid var(--line2);
 }
-.sh{margin-bottom:64px}
+.sh{margin-bottom:40px}
 .svc-list{width:100%}
 .svc-item{
   display:grid;
@@ -626,7 +635,15 @@ function SkillBars({ skills }) {
   const [fired, setFired] = useState(false);
   useEffect(() => {
     const el = ref.current;
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setFired(true); obs.disconnect(); } }, { threshold: 0.4 });
+    const obs = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setFired(true);
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.4 },
+    );
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
@@ -634,9 +651,19 @@ function SkillBars({ skills }) {
     <div ref={ref} className="skills">
       {skills.map((sk, i) => (
         <div key={i} className="sk-row" data-r data-d={i * 80}>
-          <div className="sk-head"><span>{sk.name}</span><span>{sk.pct}%</span></div>
+          <div className="sk-head">
+            <span>{sk.name}</span>
+            <span>{sk.pct}%</span>
+          </div>
           <div className="sk-track">
-            <div className="sk-fill" style={{ width: `${sk.pct}%`, transitionDelay: `${i * 100}ms` , ...(fired ? { transform: "scaleX(1)" } : {}) }} />
+            <div
+              className="sk-fill"
+              style={{
+                width: `${sk.pct}%`,
+                transitionDelay: `${i * 100}ms`,
+                ...(fired ? { transform: "scaleX(1)" } : {}),
+              }}
+            />
           </div>
         </div>
       ))}
@@ -651,44 +678,97 @@ export default function AboutSections() {
   useReveal();
 
   const stats = [
-    { num: "8+",   lbl: "Years of Experience" },
-    { num: "50+",  lbl: "Projects Delivered"  },
+    { num: "2+", lbl: "Years of Experience" },
+    { num: "20+", lbl: "Projects Delivered" },
     { num: "100%", lbl: "Client Satisfaction" },
-    { num: "15+",  lbl: "Technologies"        },
+    { num: "10+", lbl: "Technologies" },
   ];
 
   const skillsData = [
-    { name: "React / Next.js",   pct: 95 },
-    { name: "TypeScript",        pct: 90 },
-    { name: "UI / UX Design",    pct: 88 },
-    { name: "Node.js",           pct: 80 },
-    { name: "Three.js / WebGL",  pct: 72 },
+    { name: "HTML / CSS", pct: 95 },
+    { name: "JavaScript / React JS", pct: 90 },
+    { name: "Tailwind CSS / Bootstrap", pct: 88 },
+    { name: "Git / GitHub / Figma", pct: 82 },
+    { name: "PHP / MySQL", pct: 75 },
   ];
 
   const experience = [
-    { yr: "2022&ndash;Now", role: "Senior Frontend Engineer",  co: "Freelance & Remote Clients", desc: "Building high-performance web applications for global clients. Leading frontend architecture, design systems, and delivering pixel-perfect responsive interfaces.", tags: ["React","Next.js","TypeScript","Figma"] },
-    { yr: "2019&ndash;22",  role: "Lead UI Developer",         co: "Digital Product Studio",      desc: "Led a team of 5 developers building SaaS platforms. Established component libraries, code review workflows, and mentored junior developers.", tags: ["React","Storybook","Design Systems","Testing"] },
-    { yr: "2016&ndash;19",  role: "Frontend Developer",        co: "Web Agency, Lahore",          desc: "Developed 30+ client websites and web apps. Specialised in responsive design, animation, and bridging the gap between design and development.", tags: ["HTML/CSS","JavaScript","WordPress","GSAP"] },
+    {
+      yr: "2022&ndash;Now",
+      role: "Senior Frontend Engineer",
+      co: "Freelance & Remote Clients",
+      desc: "Building high-performance web applications for global clients. Leading frontend architecture, design systems, and delivering pixel-perfect responsive interfaces.",
+      tags: ["React", "JavaScript", "Tailwind CSS", "Git"],
+    },
+    {
+      yr: "2019&ndash;22",
+      role: "Lead UI Developer",
+      co: "Digital Product Studio",
+      desc: "Led a team of 5 developers building SaaS platforms. Established component libraries, code review workflows, and mentored junior developers.",
+      tags: ["CSS", "Bootstrap", "GitHub", "Figma"],
+    },
+    {
+      yr: "2016&ndash;19",
+      role: "Frontend Developer",
+      co: "Web Agency, Lahore",
+      desc: "Developed 30+ client websites and web apps. Specialised in responsive design, animation, and bridging the gap between design and development.",
+      tags: ["HTML", "CSS", "JavaScript", "PHP"],
+    },
   ];
 
   const services = [
-    { n:"01", name:"Web Development",         desc:"Full-stack web apps with React, Next.js and Node &mdash; responsive, fast, production-ready.",                  tags:["React","Next.js","Node"] },
-    { n:"02", name:"UI / UX Design",           desc:"Research-backed interface design: wireframes, prototypes and polished Figma-to-code delivery.",            tags:["Figma","Prototyping","Systems"] },
-    { n:"03", name:"Frontend Architecture",    desc:"Scalable design systems, component libraries, and code conventions that teams can actually maintain.",       tags:["TypeScript","Storybook","Testing"] },
-    { n:"04", name:"Performance Optimization", desc:"Lighthouse audits, Core Web Vitals improvements, bundle splitting &mdash; measurable, documented results.",       tags:["Webpack","Perf","SEO"] },
+    {
+      n: "01",
+      name: "Web Development",
+      desc: "Full-stack web apps with React, PHP and MySQL &mdash; responsive, fast, production-ready.",
+      tags: ["HTML", "CSS", "JavaScript", "React JS", "PHP"],
+    },
+    {
+      n: "02",
+      name: "UI / UX Design",
+      desc: "Research-backed interface design using Figma, Bootstrap and Tailwind CSS for pixel-perfect delivery.",
+      tags: ["Figma", "Bootstrap", "Tailwind CSS"],
+    },
+    {
+      n: "03",
+      name: "Frontend Architecture",
+      desc: "Scalable component libraries, code conventions and version control workflows teams can maintain.",
+      tags: ["React JS", "JavaScript", "Git", "GitHub"],
+    },
+    {
+      n: "04",
+      name: "Backend & Database",
+      desc: "Server-side development with PHP and MySQL &mdash; REST APIs, database design and deployment.",
+      tags: ["PHP", "MySQL", "Git", "GitHub"],
+    },
   ];
 
   const stack = [
-    { cat: "Frontend",   techs: ["React","Next.js","TypeScript","Tailwind CSS","Framer Motion","Redux"] },
-    { cat: "Tools",      techs: ["GSAP","Three.js","Figma","Git","Webpack","Vite"] },
-    { cat: "Design",     techs: ["UI/UX","Responsive","Accessibility","Animation","Design Systems","Storybook"] },
+    {
+      cat: "Frontend",
+      techs: [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "React JS",
+        "Bootstrap",
+        "Tailwind CSS",
+      ],
+    },
+    {
+      cat: "Tools",
+      techs: ["Git", "GitHub", "Figma"],
+    },
+    {
+      cat: "Backend",
+      techs: ["PHP", "MySQL"],
+    },
   ];
 
   return (
     <>
       <style>{G}</style>
       <div className="wr">
-
         <div className="stats">
           <div className="stats-i">
             {stats.map((s, i) => (
@@ -699,27 +779,61 @@ export default function AboutSections() {
 
         <section className="s about-bg">
           <div className="si">
-            <div data-r><div className="lbl"><div className="lbl-line"/><span className="lbl-t">About Me</span></div></div>
+            <div data-r>
+              <div className="lbl">
+                <div className="lbl-line" />
+                <span className="lbl-t">About Me</span>
+              </div>
+            </div>
             <div data-r data-d="60">
-              <h2 className="h1">A developer who <em>designs.</em><br/>A designer who <span className="out">codes.</span></h2>
+              <h2 className="h1">
+                A developer who <em>designs.</em>
+                <br />A designer who <span className="out">codes.</span>
+              </h2>
             </div>
 
             <div className="about-grid">
               <div data-r="l" data-d="100">
                 <div className="av-box">
-                  <div className="av-corner tl"/><div className="av-corner tr"/>
-                  <div className="av-corner bl"/><div className="av-corner br"/>
+                  <div className="av-corner tl" />
+                  <div className="av-corner tr" />
+                  <div className="av-corner bl" />
+                  <div className="av-corner br" />
                   <div className="av-box-inner">
-                    <span className="av-monogram">AR</span>
-                    <div className="av-avail"><span className="av-dot"/>Available for work</div>
+                    <img
+                      src="/profile.png"
+                      alt="Abdur Rahman"
+                      className="av-img"
+                    />
+                    <div className="av-avail">
+                      <span className="av-dot" />
+                      Available for work
+                    </div>
                   </div>
                 </div>
               </div>
 
               <div data-r="r" data-d="140">
                 <div className="about-body">
-                  <p>I'm a <b>senior frontend developer and UI designer</b> with 8 years of experience building digital products people actually enjoy using. I sit at the intersection of engineering and design &mdash; which means I can take a vague brief, shape it into a visual direction, and ship it as production-ready code.</p>
-                  <p>My work spans <b>SaaS dashboards, marketing sites, design systems, and interactive 3D experiences</b>. I care deeply about the details &mdash; micro-interactions, loading states, colour contrast, scroll behaviour &mdash; because that's where good products become great ones.</p>
+                  <p>
+                    I'm a <b>senior frontend developer and UI designer</b> with
+                    2 years of experience building digital products people
+                    actually enjoy using. I sit at the intersection of
+                    engineering and design &mdash; which means I can take a
+                    vague brief, shape it into a visual direction, and ship it
+                    as production-ready code.
+                  </p>
+                  <p>
+                    My work spans{" "}
+                    <b>
+                      Admin dashboards, marketing sites, design systems, and
+                      interactive 3D experiences
+                    </b>
+                    . I care deeply about the details &mdash;
+                    micro-interactions, loading states, colour contrast, scroll
+                    behaviour &mdash; because that's where good products become
+                    great ones.
+                  </p>
                 </div>
 
                 <SkillBars skills={skillsData} />
@@ -730,9 +844,16 @@ export default function AboutSections() {
 
         <section className="s exp-bg">
           <div className="si">
-            <div data-r><div className="lbl"><div className="lbl-line"/><span className="lbl-t">Experience</span></div></div>
+            <div data-r>
+              <div className="lbl">
+                <div className="lbl-line" />
+                <span className="lbl-t">Experience</span>
+              </div>
+            </div>
             <div data-r data-d="60">
-              <h2 className="h1">Where I've <em>worked</em></h2>
+              <h2 className="h1">
+                Where I've <em>worked</em>
+              </h2>
             </div>
             <div className="exp-grid" data-r data-d="120">
               {experience.map((x, i) => (
@@ -745,7 +866,11 @@ export default function AboutSections() {
                     <div className="exp-co">{x.co}</div>
                     <p className="exp-desc">{x.desc}</p>
                     <div className="exp-tags">
-                      {x.tags.map((t, j) => <span key={j} className="exp-tag">{t}</span>)}
+                      {x.tags.map((t, j) => (
+                        <span key={j} className="exp-tag">
+                          {t}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -757,8 +882,17 @@ export default function AboutSections() {
         <section className="s svc-bg">
           <div className="si">
             <div className="sh">
-              <div data-r><div className="lbl"><div className="lbl-line"/><span className="lbl-t">Services</span></div></div>
-              <div data-r data-d="60"><h2 className="h1">What I <em>bring</em> to the table</h2></div>
+              <div data-r>
+                <div className="lbl">
+                  <div className="lbl-line" />
+                  <span className="lbl-t">Services</span>
+                </div>
+              </div>
+              <div data-r data-d="60">
+                <h2 className="h1">
+                  What I <em>bring</em> to the table
+                </h2>
+              </div>
             </div>
             <div className="svc-list">
               {services.map((sv, i) => (
@@ -767,7 +901,11 @@ export default function AboutSections() {
                   <span className="svc-name">{sv.name}</span>
                   <span className="svc-desc">{sv.desc}</span>
                   <div className="svc-tags">
-                    {sv.tags.map((t, j) => <span key={j} className="sv-tag">{t}</span>)}
+                    {sv.tags.map((t, j) => (
+                      <span key={j} className="sv-tag">
+                        {t}
+                      </span>
+                    ))}
                   </div>
                   <span className="svc-arrow">&rarr;</span>
                 </div>
@@ -778,15 +916,30 @@ export default function AboutSections() {
 
         <section className="s tech-bg">
           <div className="si">
-            <div style={{marginBottom:"60px"}}>
-              <div data-r><div className="lbl"><div className="lbl-line"/><span className="lbl-t">Tech Stack</span></div></div>
-              <div data-r data-d="60"><h2 className="h1">Technologies I <em>master</em></h2></div>
+            <div style={{ marginBottom: "36px" }}>
+              <div data-r>
+                <div className="lbl">
+                  <div className="lbl-line" />
+                  <span className="lbl-t">Tech Stack</span>
+                </div>
+              </div>
+              <div data-r data-d="60">
+                <h2 className="h1">
+                  Technologies I <em>master</em>
+                </h2>
+              </div>
             </div>
             <div className="tech-grid">
               {stack.map((g, i) => (
                 <div key={i} className="tc" data-r data-d={i * 100}>
                   <div className="tc-cat">{g.cat}</div>
-                  <div className="tc-tags">{g.techs.map((t,j)=><span key={j} className="ttg">{t}</span>)}</div>
+                  <div className="tc-tags">
+                    {g.techs.map((t, j) => (
+                      <span key={j} className="ttg">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>
@@ -796,21 +949,40 @@ export default function AboutSections() {
         <section className="s cta-bg">
           <div className="si">
             <div className="cta-inner">
-              <div data-r><div className="lbl" style={{justifyContent:"center"}}><div className="lbl-line"/><span className="lbl-t">Let's Work Together</span><div className="lbl-line"/></div></div>
+              <div data-r>
+                <div className="lbl" style={{ justifyContent: "center" }}>
+                  <div className="lbl-line" />
+                  <span className="lbl-t">Let's Work Together</span>
+                  <div className="lbl-line" />
+                </div>
+              </div>
               <div data-r data-d="80">
-                <h2 className="cta-h">Have a project <br/>in <em>mind?</em></h2>
+                <h2 className="cta-h">
+                  Have a project <br />
+                  in <em>mind?</em>
+                </h2>
               </div>
               <p className="cta-p" data-r data-d="140">
-                I take on a limited number of projects each quarter to ensure every client gets my full attention. If you have something worth building, let's talk about it.
+                I take on a limited number of projects each quarter to ensure
+                every client gets my full attention. If you have something worth
+                building, let's talk about it.
               </p>
               <div className="cta-row" data-r data-d="200">
-                <button className="bp">Start a conversation <span className="ba">&rarr;</span></button>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="bs">LinkedIn Profile</a>
+                <button className="bp">
+                  Start a conversation <span className="ba">&rarr;</span>
+                </button>
+                <a
+                  href="https://linkedin.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bs"
+                >
+                  LinkedIn Profile
+                </a>
               </div>
             </div>
           </div>
         </section>
-
       </div>
     </>
   );

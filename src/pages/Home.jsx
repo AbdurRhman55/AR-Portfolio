@@ -41,12 +41,16 @@ const slides = [
 const Home = ({ onNavigateToPortfolio, onNavigateToAbout, onNavigateToContact }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [showCursorText, setShowCursorText] = useState(false);
   const containerRef = useRef(null);
   const videoRefs = useRef([]);
   const leftTextRef = useRef(null);
   const rightTextRef = useRef(null);
   const titleRef = useRef(null);
   const initialRender = useRef(true);
+  const cursorTextRef = useRef(null);
+  const mouseRef = useRef({ x: 0, y: 0 });
+  const cursorRaf = useRef(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -85,6 +89,41 @@ const Home = ({ onNavigateToPortfolio, onNavigateToAbout, onNavigateToContact })
     },
     { scope: containerRef },
   );
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      mouseRef.current = { x: e.clientX, y: e.clientY };
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
+  useEffect(() => {
+    if (!showCursorText) {
+      if (cursorRaf.current) cancelAnimationFrame(cursorRaf.current);
+      return;
+    }
+
+    let cx = mouseRef.current.x;
+    let cy = mouseRef.current.y;
+
+    const loop = () => {
+      cx += (mouseRef.current.x - cx) * 0.1;
+      cy += (mouseRef.current.y - cy) * 0.1;
+
+      if (cursorTextRef.current) {
+        cursorTextRef.current.style.transform = `translate(${cx + 14}px, ${cy + 14}px)`;
+      }
+
+      cursorRaf.current = requestAnimationFrame(loop);
+    };
+
+    loop();
+
+    return () => {
+      if (cursorRaf.current) cancelAnimationFrame(cursorRaf.current);
+    };
+  }, [showCursorText]);
 
   const changeSlide = (newIndex) => {
     if (isAnimating || newIndex === currentIndex) return;
@@ -148,6 +187,29 @@ const Home = ({ onNavigateToPortfolio, onNavigateToAbout, onNavigateToContact })
           </video>
         ))}
         <div className="absolute inset-0 bg-black/40 z-[2]" />
+
+        <div
+          className="absolute inset-x-0 z-[14] cursor-pointer"
+          style={{ top: "80px", bottom: "80px" }}
+          onMouseEnter={() => setShowCursorText(true)}
+          onMouseLeave={() => setShowCursorText(false)}
+          onClick={() => {
+            setShowCursorText(false);
+            onNavigateToPortfolio();
+          }}
+        />
+
+        <div
+          ref={cursorTextRef}
+          className={`fixed top-0 left-0 z-[9999] pointer-events-none select-none transition-opacity duration-300 ${showCursorText ? "opacity-100" : "opacity-0"}`}
+        >
+          <span className="flex items-center gap-2 text-white/80 text-xs md:text-sm font-medium tracking-widest uppercase font-sans">
+            View Project
+            <svg width="20" height="12" viewBox="0 0 20 12" fill="none" className="stroke-current">
+              <path d="M1 6H17M17 6L12 1M17 6L12 11" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </span>
+        </div>
       </div>
 
       <main className="absolute inset-x-5 md:inset-x-16 top-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none z-20">

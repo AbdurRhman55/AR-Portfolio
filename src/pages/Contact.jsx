@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -469,13 +470,13 @@ const Contact = ({
                   <div>
                     &nbsp;&nbsp;<span className="c-key">"name"</span>
                     <span className="c-dim">:</span>{" "}
-                    <span className="c-str">"Your Name"</span>
+                    <span className="c-str">"Abdur Rahman"</span>
                     <span className="c-dim">,</span>
                   </div>
                   <div>
                     &nbsp;&nbsp;<span className="c-key">"role"</span>
                     <span className="c-dim">:</span>{" "}
-                    <span className="c-str">"Full-Stack Developer"</span>
+                    <span className="c-str">"Full Stack Developer"</span>
                     <span className="c-dim">,</span>
                   </div>
                   <div>
@@ -487,7 +488,7 @@ const Contact = ({
                   <div>
                     &nbsp;&nbsp;<span className="c-key">"exp"</span>
                     <span className="c-dim">:</span>{" "}
-                    <span className="c-val">"3+ years"</span>
+                    <span className="c-val">"2+ years"</span>
                     <span className="c-dim">,</span>
                   </div>
                   <div>
@@ -592,7 +593,11 @@ const Contact = ({
                     gap: "11px",
                   }}
                 >
-                  <a href="mailto:hello@yourname.dev" className="c-info-card">
+                  <a
+                    href="https://mail.google.com/mail/?view=cm&fs=1&to=ali.matta4@gmail.com"
+                    target="_blank"
+                    className="c-info-card"
+                  >
                     <div className="c-ic-icon">
                       <svg
                         width="17"
@@ -610,7 +615,7 @@ const Contact = ({
                     </div>
                     <div className="c-ic-text">
                       <p>Email</p>
-                      <p>hello@yourname.dev</p>
+                      <p>ali.matta4@gmail.com</p>
                     </div>
                     <div className="c-ic-arrow">↗</div>
                   </a>
@@ -695,7 +700,7 @@ const Contact = ({
                   </a>
 
                   <a
-                    href="https://linkedin.com/in/yourusername"
+                    href="https://www.linkedin.com/in/abdur-rahman-web/"
                     target="_blank"
                     className="c-s-btn li"
                   >
@@ -710,7 +715,7 @@ const Contact = ({
                   </a>
 
                   <a
-                    href="https://instagram.com/yourusername"
+                    href="https://www.instagram.com/abdur_rahman_5577/"
                     target="_blank"
                     className="c-s-btn ig"
                   >
@@ -773,11 +778,10 @@ const Contact = ({
             </div>
           </div>
 
-          <div ref={footerRef} className="c-footer">
-            <p>© 2026 Your Name — All rights reserved</p>
-            <p>Designed & built in Peshawar, PK</p>
-            <p>React · GSAP · Tailwind</p>
-          </div>
+          <Footer
+            onNavigateToPortfolio={onNavigateToPortfolio}
+            onNavigateToAbout={onNavigateToAbout}
+          />
         </div>
       </div>
 
